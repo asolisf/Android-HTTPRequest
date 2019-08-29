@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">HTTPRequest</string>
+    <string name="error_service">There was error.Please try again later.</string>
 </resources>

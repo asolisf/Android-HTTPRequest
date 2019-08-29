@@ -1,5 +1,0 @@
-{
-  "endpoint": "https://samples.openweathermap.org/data/2.5/",
-  "api_key": "a66b6cf14ded881004b811bc7a7b4d63",
-  "weather_method": "weather?q=%s&appid=%s"
-}

@@ -15,6 +15,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "ENDPOINT", "\"https://samples.openweathermap.org/data/2.5/\""
+            buildConfigField "String", "API_KEY", "\"a66b6cf14ded881004b811bc7a7b4d63\""
+        }
+        debug {
+            buildConfigField "String", "ENDPOINT", "\"https://samples.openweathermap.org/data/2.5/\""
+            buildConfigField "String", "API_KEY", "\"a66b6cf14ded881004b811bc7a7b4d63\""
         }
     }
 }
@@ -29,4 +35,6 @@ dependencies {
     implementation files('libs\\gson-2.8.5-sources.jar')
     implementation files('libs\\gson-2.8.5.jar')
     implementation files('libs\\retrofit-2.6.1.jar')
+    implementation files('libs\\converter-gson-2.6.1.jar')
+    implementation files('libs\\okhttp-3.14.2.jar')
 }
