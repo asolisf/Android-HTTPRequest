@@ -119,3 +119,62 @@ private String readFile(){
 ```
 
 Para realizar el cat con un nombre diferente al de la propiedad, deberiamos utilizar la anotación **@SerializedName("PropertyName")**
+
+Crear **BuildProperties** en Gradle:
+
+```gradle
+buildTypes {
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        buildConfigField "String", "ENDPOINT", "\"https://samples.openweathermap.org/data/2.5/\""
+        buildConfigField "String", "API_KEY", "\"a66b6cf14ded881004b811bc7a7b4d63\""
+    }
+    debug {
+        buildConfigField "String", "ENDPOINT", "\"https://samples.openweathermap.org/data/2.5/\""
+        buildConfigField "String", "API_KEY", "\"a66b6cf14ded881004b811bc7a7b4d63\""
+    }
+}
+```
+
+Weather Contract
+
+```java
+public interface IWeatherService {
+
+    //weather?q={city}&appid={api_key}
+    @GET("weather")
+    Call<City> getCity(@Query("q") String city, @Query("appid") String api_key);
+}
+```
+
+Obtener datos
+
+```java
+Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
+Retrofit retrofit = new Retrofit
+        .Builder()
+        .baseUrl(BuildConfig.ENDPOINT)
+        .addConverterFactory(GsonConverterFactory.create(gson))
+        .build();
+
+IWeatherService weatherService = retrofit.create(IWeatherService.class);
+Call<City> cityCall = weatherService.getCity(CITY_NAME,BuildConfig.API_KEY);
+cityCall.enqueue(new Callback<City>() {
+    @Override
+    public void onResponse(Call<City> call, Response<City> response) {
+        City city = response.body();
+        Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    @Override
+    public void onFailure(Call<City> call, Throwable throwable) {
+        Toast.makeText(MainActivity.this,R.string.error_service,Toast.LENGTH_SHORT)
+                .show();
+    }
+});
+```
+
+
