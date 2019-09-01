@@ -2,6 +2,7 @@ package com.alansolisflores.httprequest.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alansolisflores.httprequest.BuildConfig;
@@ -19,14 +20,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private final String CITY_NAME = "London,uk";
+
+    private TextView weatherTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.weatherTextView = findViewById(R.id.weatherTextView);
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -42,8 +47,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<City> call, Response<City> response) {
                 City city = response.body();
-                Toast.makeText(MainActivity.this,city.getName(),Toast.LENGTH_SHORT)
-                        .show();
+
+                String weather = city.getName()+
+                                 ", "+
+                                 city.getMain().getTemp()+
+                                 " °F";
+
+                weatherTextView.setText(weather);
             }
 
             @Override
